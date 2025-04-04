@@ -1,0 +1,7 @@
+/.idea
+/target
+/node_modules
+*.log
+*.db
+.m2/settings.xml
+
