@@ -8,9 +8,7 @@ pipeline {
     stages {
         stage('Build .jar') {
             steps {
-                dir('modules/collect-metrics') {
-                    sh 'mvn clean package'
-                }
+                sh 'mvn clean install -pl modules/collect-metrics -am'
             }
         }
 
