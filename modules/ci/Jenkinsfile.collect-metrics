@@ -37,16 +37,8 @@ pipeline {
         stage('Build module') {
             steps {
                 script {
-                    def versionFlag = params.RELEASE ? '' : '-Drevision=1.0.0-SNAPSHOT'
-                    def repository = params.RELEASE
-                            ? '-DaltDeploymentRepository=releases::default::http://nexus:8081/repository/maven-releases/'
-                            : '-DaltDeploymentRepository=snapshots::default::http://nexus:8081/repository/maven-snapshots/'
-
                     sh """
-                        mvn ${env.MAVEN_CLI_OPTS} clean deploy \
-                          -pl modules/collect-metrics -am \
-                          ${versionFlag} \
-                          ${repository}
+                        mvn ${env.MAVEN_CLI_OPTS} clean install -pl modules/collect-metrics -am
                     """
                 }
             }
