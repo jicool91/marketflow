@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="20250405-init-schema" author="dima">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="metrics"/>
+            </not>
+            <not>
+                <tableExists tableName="strategies"/>
+            </not>
+            <not>
+                <tableExists tableName="report_log"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="metrics">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="clicks" type="INTEGER"/>
+            <column name="impressions" type="INTEGER"/>
+            <column name="cost" type="NUMERIC"/>
+        </createTable>
+
+        <createTable tableName="strategies">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="TEXT"/>
+            <column name="generated_at" type="TIMESTAMP"/>
+        </createTable>
+
+        <createTable tableName="report_log">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="file_path" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMP"/>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
