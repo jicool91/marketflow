@@ -18,8 +18,12 @@ pipeline {
 
         stage('Liquibase Migration') {
             steps {
-                dir('modules/collect-metrics') {
-                    sh 'mvn liquibase:update'
+                dir("${env.WORKSPACE}") {
+                    sh """
+              mvn ${MAVEN_CLI_OPTS} liquibase:update \
+                -pl modules/collect-metrics \
+                -Dliquibase.changeLogFile=src/main/resources/db/liquibase-config.xml
+            """
                 }
             }
         }
