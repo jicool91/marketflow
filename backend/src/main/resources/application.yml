@@ -7,6 +7,11 @@ spring:
     username: mf_user
     password: mf_pass
 
+  # Конфигурация Liquibase
+  liquibase:
+    enabled: false
+    change-log: classpath:/db/liquibase-config.xml
+
   jpa:
     hibernate:
       ddl-auto: validate

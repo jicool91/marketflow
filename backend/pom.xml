@@ -6,21 +6,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.2</version>
-        <relativePath/> <!-- Использовать версию из Maven Central -->
+        <groupId>com.marketflow</groupId>
+        <artifactId>marketflow</artifactId>
+        <version>0.1.3</version>
     </parent>
 
-    <groupId>com.marketflow</groupId>
     <artifactId>marketflow-backend</artifactId>
-    <version>0.0.3</version>
-    <name>MarketFlow Backend</name>
     <packaging>jar</packaging>
-
-    <properties>
-        <java.version>17</java.version>
-    </properties>
+    <name>MarketFlow :: Backend API</name>
+    <description>Spring Boot API Gateway for MarketFlow platform</description>
 
     <dependencies>
         <!-- Spring Web -->
@@ -35,17 +29,48 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- Spring Data JPA -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- База данных -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
         <!-- Swagger/OpenAPI -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.3.0</version>
+        </dependency>
+
+        <!-- MarketFlow модули API -->
+        <dependency>
+            <groupId>com.marketflow</groupId>
+            <artifactId>collect-metrics</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Тесты -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Spring Boot Maven Plugin -->
+            <!-- Spring Boot Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
