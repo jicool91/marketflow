@@ -14,7 +14,7 @@
 
     <groupId>com.marketflow</groupId>
     <artifactId>marketflow-backend</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>MarketFlow Backend</name>
     <packaging>jar</packaging>
 
