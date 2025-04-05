@@ -16,6 +16,12 @@ pipeline {
             }
         }
 
+        stage('Install Parent POM') {
+            steps {
+                sh 'mvn clean install -N'
+            }
+        }
+
         stage('Liquibase Migration') {
             steps {
                 dir("${env.WORKSPACE}") {
@@ -25,12 +31,6 @@ pipeline {
                 -Dliquibase.changeLogFile=src/main/resources/db/liquibase-config.xml
             """
                 }
-            }
-        }
-
-        stage('Install Parent POM') {
-            steps {
-                sh 'mvn clean install -N'
             }
         }
 
