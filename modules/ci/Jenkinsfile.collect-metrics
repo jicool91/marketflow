@@ -5,12 +5,22 @@ pipeline {
         MAVEN_OPTS = "-Dmaven.repo.local=/var/jenkins_home/.m2/repository"
         MAVEN_SETTINGS = '/var/jenkins_home/.m2/settings.xml'
         NEXUS_URL = 'http://nexus:8081/repository/maven-releases'
+        MAVEN_CLI_OPTS = '-B -ntp'
     }
 
     stages {
+
         stage('Clean .m2') {
             steps {
                 sh 'rm -rf /var/jenkins_home/.m2/repository/com/marketflow'
+            }
+        }
+
+        stage('Liquibase Migration') {
+            steps {
+                dir('modules/collect-metrics') {
+                    sh 'mvn liquibase:update'
+                }
             }
         }
 
@@ -22,7 +32,19 @@ pipeline {
 
         stage('Build module') {
             steps {
-                sh 'mvn clean install -pl modules/collect-metrics -am'
+                script {
+                    def versionFlag = params.RELEASE ? '' : '-Drevision=1.0.0-SNAPSHOT'
+                    def repository = params.RELEASE
+                            ? '-DaltDeploymentRepository=releases::default::http://nexus:8081/repository/maven-releases/'
+                            : '-DaltDeploymentRepository=snapshots::default::http://nexus:8081/repository/maven-snapshots/'
+
+                    sh """
+                        mvn ${env.MAVEN_CLI_OPTS} clean deploy \
+                          -pl modules/collect-metrics -am \
+                          ${versionFlag} \
+                          ${repository}
+                    """
+                }
             }
         }
 
