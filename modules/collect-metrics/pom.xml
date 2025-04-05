@@ -61,7 +61,7 @@
                 <version>4.24.0</version>
                 <configuration>
                     <changeLogFile>src/main/resources/db/liquibase-config.xml</changeLogFile>
-                    <url>jdbc:postgresql://localhost:5432/marketflow</url>
+                    <url>jdbc:postgresql://postgres:5432/marketflow</url>
                     <username>postgres</username>
                     <password>your_password</password>
                     <driver>org.postgresql.Driver</driver>
