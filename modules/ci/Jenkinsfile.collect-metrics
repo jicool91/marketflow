@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Build .jar') {
             steps {
-                sh 'mvn clean install -pl modules/collect-metrics -am -DskipTests'
+                sh 'mvn clean install -pl marketflow,modules/collect-metrics -am -DskipTests'
             }
         }
 
