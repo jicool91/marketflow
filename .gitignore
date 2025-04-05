@@ -5,3 +5,31 @@
 *.db
 .m2/settings.xml
 
+# Maven
+**/target/
+
+# Node.js (frontend)
+frontend/node_modules/
+frontend/dist/
+
+# IntelliJ IDEA / VS Code
+.idea/
+.vscode/
+
+# OS / системные
+.DS_Store
+Thumbs.db
+
+# Jenkins volume init (если не хочешь коммитить)
+jenkins_init/
+
+# Docker volumes (если вдруг локально подключал)
+*.log
+*.pid
+
+# Бэкапы / временные
+*.swp
+*.bak
+*.tmp
+
+
