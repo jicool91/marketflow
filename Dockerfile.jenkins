@@ -2,6 +2,10 @@ FROM jenkins/jenkins:lts
 
 USER root
 
-RUN apt-get update && apt-get install -y openssh-client
+# Установим SSH + Maven
+RUN apt-get update && apt-get install -y \
+    openssh-client \
+    maven \
+ && rm -rf /var/lib/apt/lists/*
 
 USER jenkins
