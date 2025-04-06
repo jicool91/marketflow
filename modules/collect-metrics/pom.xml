@@ -94,18 +94,6 @@
                     <driver>org.postgresql.Driver</driver>
                 </configuration>
             </plugin>
-
-            <!-- jar-плагин -->
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.marketflow.metrics.CollectorApp</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 

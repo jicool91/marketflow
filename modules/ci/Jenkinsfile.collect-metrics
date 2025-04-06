@@ -68,9 +68,8 @@ pipeline {
             }
             post {
                 always {
-                    recordIssues enabledForFailure: true, tool: checkStyle()
-                    recordIssues enabledForFailure: true, tool: pmdParser()
-                    recordIssues enabledForFailure: true, tool: spotBugs()
+                    archiveArtifacts artifacts: 'modules/collect-metrics/target/site/checkstyle.html', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'modules/collect-metrics/target/site/pmd.html', allowEmptyArchive: true
                 }
             }
         }
