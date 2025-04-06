@@ -5,7 +5,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="changelog/01_init_schema.xml" relativeToChangelogFile="true"/>
-    <!-- Создаем локальную копию 02_metrics_extensions.sql -->
+    <include file="changelog/01_init_schema.sql" relativeToChangelogFile="true"/>
     <include file="changelog/02_metrics_extensions.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
