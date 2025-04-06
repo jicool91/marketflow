@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Install Parent POM') {
             steps {
-                sh 'mvn clean install -N -Drevision=0.1.8'
+                sh 'mvn deploy -N -Drevision=0.1.8'
             }
         }
         
