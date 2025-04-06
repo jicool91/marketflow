@@ -10,15 +10,19 @@ pipeline {
     }
 
     stages {
-        stage('Clean .m2') {
-            steps {
-                sh 'rm -rf /var/jenkins_home/.m2/repository/com/marketflow'
-            }
-        }
-
         stage('Install Parent POM') {
             steps {
                 sh 'mvn clean install -N'
+            }
+        }
+        
+        stage('Build collect-metrics') {
+            steps {
+                dir("${env.WORKSPACE}") {
+                    sh """
+                        mvn ${MAVEN_CLI_OPTS} clean install -pl modules/collect-metrics -am -DskipTests
+                    """
+                }
             }
         }
 
