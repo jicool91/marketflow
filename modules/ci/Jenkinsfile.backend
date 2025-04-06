@@ -5,14 +5,14 @@ pipeline {
         MAVEN_OPTS = "-Dmaven.repo.local=/var/jenkins_home/.m2/repository"
         MAVEN_SETTINGS = '/var/jenkins_home/.m2/settings.xml'
         NEXUS_URL = 'http://nexus:8081/repository/maven-releases'
-        MAVEN_CLI_OPTS = '-B -ntp'
+        MAVEN_CLI_OPTS = '-B -ntp -Drevision=0.1.8'  // Добавляем revision здесь
         MODULE_PATH = 'backend'
     }
 
     stages {
         stage('Install Parent POM') {
             steps {
-                sh 'mvn clean install -N'
+                sh 'mvn clean install -N -Drevision=0.1.8'
             }
         }
         
