@@ -52,6 +52,7 @@
         <dependency>
             <groupId>com.marketflow</groupId>
             <artifactId>collect-metrics</artifactId>
+            <version>${project.version}</version>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
