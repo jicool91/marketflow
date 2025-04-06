@@ -7,15 +7,13 @@
 
     <groupId>com.marketflow</groupId>
     <artifactId>marketflow</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <packaging>pom</packaging>
     <name>MarketFlow :: Root</name>
     <description>Root project for MarketFlow platform</description>
 
     <!-- Глобальные свойства проекта -->
     <properties>
-        <!-- Версия проекта -->
-        <revision>0.1.8</revision>
 
         <!-- Java версия -->
         <java.version>17</java.version>
