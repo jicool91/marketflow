@@ -23,6 +23,17 @@ services:
       - ./jenkins_init:/var/jenkins_home/init.groovy.d
     restart: unless-stopped
 
+  nginx:
+    image: nginx:alpine
+    container_name: marketflow-nginx
+    ports:
+      - "8085:80"
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html:ro
+      - ./infra/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - jenkins  # если хочешь, чтобы поднимался после Jenkins
+
   postgres:
     image: postgres:15
     container_name: postgres

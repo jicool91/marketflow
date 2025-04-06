@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    options {
+        skipStagesAfterUnstable()
+    }
+    stages {
+        stage('Install deps') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        stage('Archive dist') {
+            steps {
+                archiveArtifacts artifacts: 'dist/**', fingerprint: true
+            }
+        }
+    }
+    post {
+        success {
+            build job: 'marketflow-frontend', wait: false
+        }
+    }
+}
