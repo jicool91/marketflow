@@ -1,0 +1,104 @@
+pipeline {
+    agent any
+
+    environment {
+        MAVEN_OPTS = "-Dmaven.repo.local=/var/jenkins_home/.m2/repository"
+        MAVEN_SETTINGS = '/var/jenkins_home/.m2/settings.xml'
+        NEXUS_URL = 'http://nexus:8081/repository/maven-releases'
+        MAVEN_CLI_OPTS = '-B -ntp'
+        MODULE_PATH = 'modules/strategy-engine'
+    }
+
+    parameters {
+        string(name: 'DB_URL', defaultValue: 'jdbc:postgresql://postgres:5432/marketflow', description: 'Database URL')
+        string(name: 'DB_USERNAME', defaultValue: 'mf_user', description: 'Database username')
+        password(name: 'DB_PASSWORD', defaultValue: 'mf_pass', description: 'Database password')
+        string(name: 'ANALYSIS_PERIOD', defaultValue: '30', description: 'Default analysis period in days')
+    }
+
+    stages {
+        stage('Clean .m2') {
+            steps {
+                sh 'rm -rf /var/jenkins_home/.m2/repository/com/marketflow/strategy-engine'
+            }
+        }
+
+        stage('Install Parent POM') {
+            steps {
+                sh 'mvn clean install -N'
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
+                script {
+                    sh """
+                        mvn ${MAVEN_CLI_OPTS} clean package -pl ${MODULE_PATH} -am
+                    """
+                }
+            }
+            post {
+                always {
+                    junit "**/target/surefire-reports/*.xml"
+                }
+            }
+        }
+
+        stage('Run Code Analysis') {
+            steps {
+                sh """
+                    mvn ${MAVEN_CLI_OPTS} checkstyle:checkstyle pmd:pmd spotbugs:spotbugs \
+                        -pl ${MODULE_PATH}
+                """
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: '${MODULE_PATH}/target/site/checkstyle.html', allowEmptyArchive: true
+                    archiveArtifacts artifacts: '${MODULE_PATH}/target/site/pmd.html', allowEmptyArchive: true
+                }
+            }
+        }
+
+        stage('Publish to Nexus') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                    sh """
+                        mvn ${MAVEN_CLI_OPTS} deploy -DskipTests \
+                            -pl ${MODULE_PATH} \
+                            -DaltDeploymentRepository=nexus-releases::${NEXUS_URL} \
+                            -Dnexus.username=${NEXUS_USER} \
+                            -Dnexus.password=${NEXUS_PASS} \
+                            --settings ${MAVEN_SETTINGS}
+                    """
+                }
+            }
+        }
+
+        stage('Execute Strategy Engine') {
+            steps {
+                withEnv([
+                    "DB_URL=${params.DB_URL}",
+                    "DB_USERNAME=${params.DB_USERNAME}",
+                    "DB_PASSWORD=${params.DB_PASSWORD}",
+                    "ANALYSIS_PERIOD=${params.ANALYSIS_PERIOD}"
+                ]) {
+                    sh """
+                        java -jar ${MODULE_PATH}/target/strategy-engine-*.jar
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'Strategy Engine build and execution completed successfully!'
+        }
+        failure {
+            echo 'Strategy Engine build or execution failed!'
+        }
+    }
+}
