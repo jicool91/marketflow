@@ -1,5 +1,10 @@
-// Создаем основную джобу
-pipelineJob('marketflow-main') {
+folder('Marketflow') {
+    displayName('Marketflow')
+    description('CI/CD Jobs for Marketflow Project')
+}
+
+// Main
+pipelineJob('Marketflow/marketflow-main') {
     definition {
         cpsScm {
             scm {
@@ -14,13 +19,10 @@ pipelineJob('marketflow-main') {
             scriptPath('Jenkinsfile.main')
         }
     }
-    triggers {
-        scm('H/5 * * * *')
-    }
 }
 
 // Backend
-pipelineJob('marketflow-backend') {
+pipelineJob('Marketflow/marketflow-backend') {
     definition {
         cpsScm {
             scm {
@@ -38,7 +40,7 @@ pipelineJob('marketflow-backend') {
 }
 
 // Frontend
-pipelineJob('marketflow-frontend') {
+pipelineJob('Marketflow/marketflow-frontend') {
     definition {
         cpsScm {
             scm {
@@ -56,7 +58,7 @@ pipelineJob('marketflow-frontend') {
 }
 
 // Collect Metrics
-pipelineJob('marketflow-collect-metrics') {
+pipelineJob('Marketflow/marketflow-collect-metrics') {
     definition {
         cpsScm {
             scm {
@@ -74,7 +76,7 @@ pipelineJob('marketflow-collect-metrics') {
 }
 
 // Strategy Engine
-pipelineJob('marketflow-strategy-engine') {
+pipelineJob('Marketflow/marketflow-strategy-engine') {
     definition {
         cpsScm {
             scm {
@@ -92,7 +94,7 @@ pipelineJob('marketflow-strategy-engine') {
 }
 
 // PDF Generator
-pipelineJob('marketflow-pdf-generator') {
+pipelineJob('Marketflow/marketflow-pdf-generator') {
     definition {
         cpsScm {
             scm {
@@ -110,7 +112,7 @@ pipelineJob('marketflow-pdf-generator') {
 }
 
 // Bot Sender
-pipelineJob('marketflow-bot-sender') {
+pipelineJob('Marketflow/marketflow-bot-sender') {
     definition {
         cpsScm {
             scm {
