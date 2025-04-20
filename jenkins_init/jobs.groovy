@@ -6,7 +6,7 @@ pipelineJob('marketflow-main') {
                 git {
                     remote {
                         url('https://github.com/jicool91/test1.git')
-                        credentials('github-creds')
+                        credentials('github-access')
                     }
                     branch('main')
                 }
@@ -27,7 +27,7 @@ pipelineJob('marketflow-backend') {
                 git {
                     remote {
                         url('https://github.com/jicool91/test1.git')
-                        credentials('github-creds')
+                        credentials('github-access')
                     }
                     branch('main')
                 }
@@ -45,7 +45,7 @@ pipelineJob('marketflow-frontend') {
                 git {
                     remote {
                         url('https://github.com/jicool91/test1.git')
-                        credentials('github-creds')
+                        credentials('github-access')
                     }
                     branch('main')
                 }
@@ -63,7 +63,7 @@ pipelineJob('marketflow-collect-metrics') {
                 git {
                     remote {
                         url('https://github.com/jicool91/test1.git')
-                        credentials('github-creds')
+                        credentials('github-access')
                     }
                     branch('main')
                 }
@@ -81,7 +81,7 @@ pipelineJob('marketflow-strategy-engine') {
                 git {
                     remote {
                         url('https://github.com/jicool91/test1.git')
-                        credentials('github-creds')
+                        credentials('github-access')
                     }
                     branch('main')
                 }
@@ -99,7 +99,7 @@ pipelineJob('marketflow-pdf-generator') {
                 git {
                     remote {
                         url('https://github.com/jicool91/test1.git')
-                        credentials('github-creds')
+                        credentials('github-access')
                     }
                     branch('main')
                 }
@@ -117,7 +117,7 @@ pipelineJob('marketflow-bot-sender') {
                 git {
                     remote {
                         url('https://github.com/jicool91/test1.git')
-                        credentials('github-creds')
+                        credentials('github-access')
                     }
                     branch('main')
                 }
