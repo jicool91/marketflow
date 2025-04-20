@@ -22,6 +22,7 @@ Thumbs.db
 
 # Jenkins volume init (если не хочешь коммитить)
 jenkins_init/
+jenkins_data/
 
 # Docker volumes (если вдруг локально подключал)
 *.log

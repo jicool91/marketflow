@@ -20,9 +20,10 @@ services:
       - "8080:8080"
     volumes:
       - jenkins-data:/var/jenkins_home
-      - ./jenkins_init:/var/jenkins_home/init.groovy.d
       - .m2/settings.xml:/var/jenkins_home/.m2/settings.xml
     restart: unless-stopped
+    dns:
+      - 8.8.8.8
 
   nginx:
     image: nginx:alpine
