@@ -1,0 +1,65 @@
+pipeline {
+    agent any
+
+    environment {
+        MAVEN_OPTS = "-Dmaven.repo.local=/var/jenkins_home/.m2/repository"
+        MAVEN_SETTINGS = '/var/jenkins_home/.m2/settings.xml'
+        NEXUS_URL = 'http://nexus:8081/repository/maven-releases'
+        MAVEN_CLI_OPTS = '-B -ntp'
+        MODULE_PATH = 'modules/bot-sender'
+    }
+
+    stages {
+        stage('Clean .m2') {
+            steps {
+                sh 'rm -rf /var/jenkins_home/.m2/repository/com/marketflow/bot-sender'
+            }
+        }
+
+        stage('Install Parent POM') {
+            steps {
+                sh 'mvn clean install -N'
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
+                sh """
+                    mvn ${MAVEN_CLI_OPTS} clean package -pl ${MODULE_PATH} -am
+                """
+            }
+            post {
+                always {
+                    junit "**/target/surefire-reports/*.xml"
+                }
+            }
+        }
+
+        stage('Publish to Nexus') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                    sh """
+                        mvn ${MAVEN_CLI_OPTS} deploy -DskipTests \
+                            -pl ${MODULE_PATH} \
+                            -DaltDeploymentRepository=nexus-releases::${NEXUS_URL} \
+                            -Dnexus.username=${NEXUS_USER} \
+                            -Dnexus.password=${NEXUS_PASS} \
+                            --settings ${MAVEN_SETTINGS}
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'Bot Sender build completed successfully!'
+        }
+        failure {
+            echo 'Bot Sender build failed!'
+        }
+    }
+}

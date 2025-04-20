@@ -1,0 +1,78 @@
+pipeline {
+    agent any
+
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds()
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build and Test Backend') {
+            steps {
+                build job: 'marketflow-backend', wait: true
+            }
+        }
+
+        stage('Build and Test Frontend') {
+            steps {
+                build job: 'marketflow-frontend', wait: true
+            }
+        }
+
+        stage('Build and Test Modules') {
+            parallel {
+                stage('Collect Metrics') {
+                    steps {
+                        build job: 'marketflow-collect-metrics', wait: true
+                    }
+                }
+
+                stage('Strategy Engine') {
+                    steps {
+                        build job: 'marketflow-strategy-engine', wait: true
+                    }
+                }
+
+                stage('PDF Generator') {
+                    steps {
+                        build job: 'marketflow-pdf-generator', wait: true
+                    }
+                }
+
+                stage('Bot Sender') {
+                    steps {
+                        build job: 'marketflow-bot-sender', wait: true
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo 'Deploying to production...'
+                // Здесь команды для деплоя
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
