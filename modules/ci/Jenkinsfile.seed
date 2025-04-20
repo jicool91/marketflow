@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Generate Jobs') {
+            steps {
+                jobDsl targets: 'jenkins_init/jobs.groovy',
+                       removedJobAction: 'IGNORE',
+                       removedViewAction: 'IGNORE',
+                       lookupStrategy: 'SEED_JOB'
+            }
+        }
+    }
+}
