@@ -7,6 +7,7 @@ import com.marketflow.strategy.service.StrategyGenerationService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -81,6 +82,6 @@ public class EngineApp {
                 return Arrays.asList(args);
             }
         }
-        return Arrays.asList();
+        return Collections.emptyList();
     }
 }
