@@ -1,51 +1,28 @@
 # MarketFlow
 
-MarketFlow — платформа для обработки биржевых данных и автоматизации торговых стратегий. Проект состоит из backend-а, frontend-а и набора модулей, объединённых общей системой CI/CD.
+MarketFlow — мульти‑тенантная платформа маркетинговой аналитики в формате Telegram Mini App.
+Пользователи подключают рекламные источники, собирают события и получают
+воронки, атрибуцию, KPI (CTR, CPC, CPA, ROAS) и PDF‑отчёты с доставкой в Telegram.
 
 ## Структура репозитория
+- **backend** — Spring Boot сервис с REST API, авторизацией через Telegram и
+  изоляцией данных по арендаторам.
+- **frontend** — SPA на React/Vite, запускаемая как Telegram WebApp.
+- **modules** — вспомогательные сервисы (заготовки под коннекторы, генератор отчётов и т.д.).
+- **infra** — конфигурация nginx и окружения.
+- **docs/adr** — архитектурные решения.
 
-- **backend** — Spring Boot приложение со всей бизнес-логикой.
-- **frontend** — веб-интерфейс на основе React/Vite (подробнее см. `frontend/README.md`).
-- **modules** — дополнительные сервисы, например:
-  - `collect-metrics`
-  - `strategy-engine`
-  - `pdf-generator`
-  - `bot-sender`
-- **infra** — конфигурация nginx и прочая инфраструктура.
-- **jenkins_init** — скрипты и Groovy-файл для автоматического создания Jenkins job'ов.
-
-## Сборка
-
-Для сборки всех модулей выполните:
+## Сборка и запуск
+Используйте `Makefile` для типичных операций:
 
 ```bash
-mvn clean install
+make build      # сборка backend и модулей
+make frontend   # сборка фронтенда
+make up         # поднять docker-compose окружение
 ```
 
-Фронтенд можно собрать отдельно из каталога `frontend`:
+Docker Compose поднимает Postgres, Jenkins, Nexus и nginx с фронтендом.
 
-```bash
-npm install
-npm run build
-```
-
-## Запуск через docker-compose
-
-Проект содержит `docker-compose.yml`, который поднимает Jenkins, Nexus, Postgres и nginx. Запуск:
-
-```bash
-docker-compose up -d
-```
-
-После этого Jenkins будет доступен на `http://localhost:8080`.
-
-## Jenkins pipelines
-
-В репозитории есть несколько Jenkinsfile:
-
-- `Jenkinsfile.main` — собирает все модули и запускает деплой.
-- `modules/ci/*` — отдельные пайплайны для backend, frontend и модулей.
-- Groovy-скрипт `jenkins_init/jobs.groovy` создаёт необходимые jobs при старте Jenkins.
-
-Эти pipeline'ы автоматически выполняют сборку и тестирование проекта.
-
+## Документация
+- Архитектурные решения: `docs/adr`
+- Сводка миграций: `MIGRATION.md`
